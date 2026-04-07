@@ -1,0 +1,21 @@
+{
+  "users": [
+    { "id": 1, "name": "Fede" },
+    { "id": 2, "name": "Juan" }
+  ],
+  "accounts": [
+    { "id": 1, "userId": 1, "balance": 1000, "currency": "ARS" },
+    { "id": 2, "userId": 2, "balance": 500, "currency": "ARS" }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "fromAccountId": 1,
+      "toAccountId": 2,
+      "amount": 200,
+      "currency": "ARS",
+      "status": "COMPLETED",
+      "timestamp": "2026-04-04T10:00:00Z"
+    }
+  ]
+}
