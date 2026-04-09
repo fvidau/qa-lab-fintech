@@ -1,22 +1,14 @@
-import requests
-
-BASE_URL = "http://localhost:3000"
-
-
-def test_get_transactions_status_200():
-    response = requests.get(f"{BASE_URL}/transactions")
-    assert response.status_code == 200
+def test_get_transactions_status_200(get_transactions):
+    assert get_transactions.status_code == 200
 
 
-def test_transactions_response_is_list():
-    response = requests.get(f"{BASE_URL}/transactions")
-    data = response.json()
+def test_transactions_response_is_list(get_transactions):
+    data = get_transactions.json()
     assert isinstance(data, list)
 
 
-def test_transaction_has_required_fields():
-    response = requests.get(f"{BASE_URL}/transactions")
-    data = response.json()
+def test_transaction_has_required_fields(get_transactions):
+    data = get_transactions.json()
 
     for tx in data:
         assert "id" in tx
@@ -27,18 +19,12 @@ def test_transaction_has_required_fields():
         assert "status" in tx
 
 
-def test_transaction_accounts_exist():
-    transactions_response = requests.get(f"{BASE_URL}/transactions")
-    accounts_response = requests.get(f"{BASE_URL}/accounts")
+def test_transaction_accounts_exist(get_transactions, get_accounts):
+    transactions = get_transactions.json()
+    accounts = get_accounts.json()
 
-    assert transactions_response.status_code == 200
-    assert accounts_response.status_code == 200
-
-    transactions = transactions_response.json()
-    accounts = accounts_response.json()
-
-    account_ids = {int(account["id"]) for account in accounts}
+    account_ids = {int(acc["id"]) for acc in accounts}
 
     for tx in transactions:
-        assert tx["fromAccountId"] in account_ids
-        assert tx["toAccountId"] in account_ids
+        assert int(tx["fromAccountId"]) in account_ids
+        assert int(tx["toAccountId"]) in account_ids
