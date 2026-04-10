@@ -1,0 +1,32 @@
+name: QA Automation Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        pip install pytest playwright requests
+        playwright install --with-deps
+
+    - name: Run API tests
+      run: |
+        pytest automation/tests -v
+
+    - name: Run UI tests
+      run: |
+        pytest playwright-ui/tests -v
